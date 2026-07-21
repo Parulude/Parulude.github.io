@@ -134,27 +134,27 @@ h2 {
 /* BACKGROUNDS */
 
 .hero-section {
-    background-image: url("Images/hero.png");
+    background-image: url("images/hero.png");
 }
 
 .about-section {
-    background-image: url("Images/about.png");
+    background-image: url("images/about.png");
 }
 
 .expertise-section {
-    background-image: url("Images/expertise.png");
+    background-image: url("images/expertise.png");
 }
 
 .apparel-section {
-    background-image: url("Images/apparel.png");
+    background-image: url("images/apparel.png");
 }
 
 .builds-section {
-    background-image: url("Images/builds.png");
+    background-image: url("images/builds.png");
 }
 
 .events-section {
-    background-image: url("Images/events.png");
+    background-image: url("images/events.png");
 }
 
 /* EXPERTISE */
