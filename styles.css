@@ -1,6 +1,6 @@
 @font-face {
     font-family: "BBH Bartle";
-    src: url("fonts/BBHBartle-Regular.otf") format("opentype");
+    src: url("fonts/BBHBartle-Regular.ttf") format("opentype");
 }
 
 :root {
