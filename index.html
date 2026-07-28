@@ -12,6 +12,11 @@
     <div class="logo">
         <img src="images/Main logo.png" alt="Deadbeat's Speed Shop logo" class="logo-image">
     </div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
     <nav class="primary-navigation">
         <ul>
             <li><a href="index.html#hero">Home</a></li>
@@ -27,14 +32,14 @@
 
 <main>
     <section class="hero-section" id="hero">
-        <div class="content hero-content">
+        <div class="content fade-in hero-content">
             <h1>WELCOME<br>TO THE<br>GARAGE</h1>
             <p>We provide some of the best service and expertise in the business taking pride in what we do and the work we put out.</p>
         </div>
     </section>
 
     <section class="section about-section" id="about">
-        <div class="content section-panel">
+        <div class="content fade-in section-panel">
             <p class="section-label">Who We Are</p>
             <h2>WHO WE<br>ARE</h2>
             <p>What started out as a small enthusiast hobby shop has now become one of the leading restoration shops in the area specializing in high end classics.</p>
@@ -43,7 +48,7 @@
     </section>
 
     <section class="section expertise-section" id="services">
-        <div class="content section-panel">
+        <div class="content fade-in section-panel">
             <p class="section-label">Best Of The Best</p>
             <h2>OUR RANGE OF<br>EXPERTISE</h2>
             <div class="expertise-grid">
@@ -73,7 +78,7 @@
     </section>
 
     <section class="section apparel-section" id="apparel">
-        <div class="content apparel-grid">
+        <div class="content fade-in apparel-grid">
             <div class="apparel-card apparel-card-large"></div>
             <div class="apparel-card apparel-card-small"></div>
             <div class="apparel-copy">
@@ -86,7 +91,7 @@
     </section>
 
     <section class="section builds-section" id="builds">
-        <div class="content section-panel">
+        <div class="content fade-in section-panel">
             <h2>DREAMS<br>COME TRUE</h2>
             <p>We make sure everything you dream of becomes a reality.</p>
             <a href="#events" class="section-button">Discover</a>
@@ -94,7 +99,7 @@
     </section>
 
     <section class="section events-section" id="events">
-        <div class="content section-panel">
+        <div class="content fade-in section-panel">
             <h2>EVENTS</h2>
             <p>Join us for open house days and annual meets at the garage.</p>
             <a href="#contact" class="section-button">Discover</a>
@@ -102,7 +107,7 @@
     </section>
 
     <section class="contact-section" id="contact">
-        <div class="contact-card">
+        <div class="contact-card fade-in">
             <p class="contact-label">Anything You Can Dream Of</p>
             <h2>Contact Us To Build Your Next Big Idea</h2>
             <a href="mailto:deadbeats@email.com" class="contact-button">Schedule Visit</a>
@@ -130,6 +135,40 @@
         <p>0412 000 000</p>
     </div>
 </footer>
+
+<script>
+// Toggle `nav-open` class on the nav for mobile hamburger behaviour
+(function(){
+    const btn = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.primary-navigation');
+    if(!btn || !nav) return;
+    btn.addEventListener('click', function(){
+        const open = nav.classList.toggle('nav-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // close nav when a link is clicked (mobile)
+    nav.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{
+        if(nav.classList.contains('nav-open')){
+            nav.classList.remove('nav-open');
+            btn.setAttribute('aria-expanded','false');
+        }
+    }));
+})();
+
+(function(){
+    const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+            if(entry.isIntersecting){
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.18
+    });
+    document.querySelectorAll('.fade-in').forEach(el=> observer.observe(el));
+})();
+</script>
 
 </body>
 </html>
