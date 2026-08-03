@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Deadbeat's Speed Shop</title>
+    <title>Apparel — Deadbeat's Speed Shop</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -34,30 +34,67 @@
 </header>
 
 <main>
-    <section class="about-hero" style="background-image:url('images/About hero.png')">
+    <section class="contact-hero apparel-hero">
         <div class="content fade-in">
-            <h1>ABOUT US</h1>
+            <p class="section-label">Built for the garage</p>
+            <h1>Apparel</h1>
+            <p>Browse our starter collection of branded gear designed for everyday wear and workshop life.</p>
         </div>
     </section>
 
-    <section class="about-main">
-        <div class="content fade-in main-grid">
-            <div class="intro" id="about-header">
-                <h2>An Establishment 5 Years In The Making</h2>
-                <p class="muted">We are not just another business, we are a family and group of like minded individuals who have a passion for creation.</p>
+    <section class="apparel-shop-section">
+        <div class="content fade-in">
+            <div class="section-heading">
+                <p class="section-label">Garage essentials</p>
+                <h2>Clothing & Stickers</h2>
+            </div>
+            <div class="apparel-shop-grid">
+                <article class="shop-card">
+                    <div class="shop-icon">🧢</div>
+                    <h3>Classic Cap</h3>
+                    <p>Heavy cotton cap with embroidered logo.</p>
+                    <span class="price">$45</span>
+                </article>
+                <article class="shop-card">
+                    <div class="shop-icon">👕</div>
+                    <h3>Workshop Tee</h3>
+                    <p>Soft tee for long days in the garage.</p>
+                    <span class="price">$55</span>
+                </article>
+                <article class="shop-card">
+                    <div class="shop-icon">🧥</div>
+                    <h3>Heavy Jacket</h3>
+                    <p>Durable jacket made for cooler mornings.</p>
+                    <span class="price">$75</span>
+                </article>
+                <article class="shop-card">
+                    <div class="shop-icon">🥼</div>
+                    <h3>Work Shirt</h3>
+                    <p>Premium shirt for shop wear and travel.</p>
+                    <span class="price">$85</span>
+                </article>
             </div>
 
-            <div class="gallery-grid">
-                <img src="images/about sub 1.png" alt="gallery image 1">
-                <img src="images/about sub 2.png" alt="gallery image 2">
+            <div class="sticker-section">
+                <h3>Stickers</h3>
+                <div class="sticker-grid">
+                    <article class="shop-card sticker-card">
+                        <div class="shop-icon">🔧</div>
+                        <h3>Garage Sticker</h3>
+                        <span class="price">$12</span>
+                    </article>
+                    <article class="shop-card sticker-card">
+                        <div class="shop-icon">🚗</div>
+                        <h3>Speed Shop Sticker</h3>
+                        <span class="price">$12</span>
+                    </article>
+                    <article class="shop-card sticker-card">
+                        <div class="shop-icon">⚙️</div>
+                        <h3>Build Mode Sticker</h3>
+                        <span class="price">$12</span>
+                    </article>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <section class="story-cta">
-        <div class="content fade-in story-panel">
-            <h3>Read Our Full Story</h3>
-            <a href="#" class="section-button">Blog</a>
         </div>
     </section>
 </main>
@@ -68,7 +105,7 @@
         <a href="index.html#hero">Home</a>
         <a href="index.html#builds">Builds</a>
         <a href="index.html#events">Events</a>
-        <a href="index.html#apparel">Apparel</a>
+        <a href="contact.html">Contact</a>
     </div>
     <div class="footer-column">
         <h3>Information</h3>
@@ -84,7 +121,6 @@
 </footer>
 
 <script>
-// Toggle `nav-open` class on the nav for mobile hamburger behaviour
 ;(function(){
   const btn = document.querySelector('.nav-toggle');
   const nav = document.querySelector('.primary-navigation');
