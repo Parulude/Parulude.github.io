@@ -11,10 +11,11 @@
 <header class="site-header">
     <div class="logo">
         <a href="index.html">
-            <img src="images/Main logo.png" alt="Deadbeat's Speed Shop logo" class="logo-image">
+                <img src="images/main-logo.png" alt="Deadbeat's Speed Shop logo" class="logo-image">
         </a>
     </div>
     <a href="contact.html" class="contact-icon" aria-label="Contact us">✉</a>
+    <a href="#" id="cart-toggle" class="contact-icon" aria-label="View cart">🛒 <span class="cart-count" id="cart-count">0</span></a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
         <span></span>
         <span></span>
@@ -49,25 +50,25 @@
                 <h2>Clothing & Stickers</h2>
             </div>
             <div class="apparel-shop-grid">
-                <article class="shop-card">
+                <article class="shop-card" data-name="Classic Cap" data-price="45">
                     <div class="shop-icon">🧢</div>
                     <h3>Classic Cap</h3>
                     <p>Heavy cotton cap with embroidered logo.</p>
                     <span class="price">$45</span>
                 </article>
-                <article class="shop-card">
+                <article class="shop-card" data-name="Workshop Tee" data-price="55">
                     <div class="shop-icon">👕</div>
                     <h3>Workshop Tee</h3>
                     <p>Soft tee for long days in the garage.</p>
                     <span class="price">$55</span>
                 </article>
-                <article class="shop-card">
+                <article class="shop-card" data-name="Heavy Jacket" data-price="75">
                     <div class="shop-icon">🧥</div>
                     <h3>Heavy Jacket</h3>
                     <p>Durable jacket made for cooler mornings.</p>
                     <span class="price">$75</span>
                 </article>
-                <article class="shop-card">
+                <article class="shop-card" data-name="Work Shirt" data-price="85">
                     <div class="shop-icon">🥼</div>
                     <h3>Work Shirt</h3>
                     <p>Premium shirt for shop wear and travel.</p>
@@ -78,17 +79,17 @@
             <div class="sticker-section">
                 <h3>Stickers</h3>
                 <div class="sticker-grid">
-                    <article class="shop-card sticker-card">
+                    <article class="shop-card sticker-card" data-name="Garage Sticker" data-price="12">
                         <div class="shop-icon">🔧</div>
                         <h3>Garage Sticker</h3>
                         <span class="price">$12</span>
                     </article>
-                    <article class="shop-card sticker-card">
+                    <article class="shop-card sticker-card" data-name="Speed Shop Sticker" data-price="12">
                         <div class="shop-icon">🚗</div>
                         <h3>Speed Shop Sticker</h3>
                         <span class="price">$12</span>
                     </article>
-                    <article class="shop-card sticker-card">
+                    <article class="shop-card sticker-card" data-name="Build Mode Sticker" data-price="12">
                         <div class="shop-icon">⚙️</div>
                         <h3>Build Mode Sticker</h3>
                         <span class="price">$12</span>
@@ -97,6 +98,18 @@
             </div>
         </div>
     </section>
+
+    <div class="cart-panel" id="cart-panel" aria-hidden="true">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button id="cart-close" aria-label="Close cart">✕</button>
+        </div>
+        <ul class="cart-items" id="cart-items"></ul>
+        <div class="cart-footer">
+            <div class="cart-subtotal">Subtotal: <span id="cart-subtotal">$0.00</span></div>
+            <button id="cart-checkout" class="section-button">Checkout</button>
+        </div>
+    </div>
 </main>
 
 <footer class="site-footer">
@@ -149,6 +162,111 @@
     threshold: 0.18
   });
   document.querySelectorAll('.fade-in').forEach(el=> observer.observe(el));
+})();
+
+// Cart logic
+(function(){
+    const shopCards = document.querySelectorAll('.shop-card');
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartPanel = document.getElementById('cart-panel');
+    const cartClose = document.getElementById('cart-close');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartSubtotalEl = document.getElementById('cart-subtotal');
+    const cartCountEl = document.getElementById('cart-count');
+
+    const cart = [];
+
+    function formatMoney(n){ return '$' + n.toFixed(2); }
+
+    function updateCartUI(){
+        cartItemsEl.innerHTML = '';
+        let subtotal = 0;
+        cart.forEach((item, idx)=>{
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="cart-item-thumb">${item.icon || '🎁'}</div>
+                <div class="cart-item-meta">
+                  <div class="cart-item-name">${item.name}</div>
+                  <div class="cart-item-qty">
+                    <div class="qty-controls" data-idx="${idx}">
+                      <button class="qty-decrease" data-idx="${idx}" aria-label="Decrease">−</button>
+                      <div class="qty-value">${item.qty}</div>
+                      <button class="qty-increase" data-idx="${idx}" aria-label="Increase">+</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="cart-item-right">
+                  <div class="cart-item-price">${formatMoney(item.price * item.qty)}</div>
+                  <button class="cart-item-remove" data-idx="${idx}" aria-label="Remove item">Remove</button>
+                </div>`;
+            cartItemsEl.appendChild(li);
+            subtotal += item.price * item.qty;
+        });
+        cartSubtotalEl.textContent = formatMoney(subtotal);
+        const count = cart.reduce((s,i)=>s+i.qty,0);
+        cartCountEl.textContent = count;
+        if(count === 0){ cartCountEl.style.display = 'none'; } else { cartCountEl.style.display = 'inline-flex'; }
+    }
+
+    function addToCart(name, price, icon){
+        const existing = cart.find(i=>i.name===name);
+        if(existing) existing.qty += 1; else cart.push({name, price, qty:1, icon});
+        updateCartUI();
+        cartPanel.classList.add('open');
+        cartPanel.setAttribute('aria-hidden','false');
+    }
+
+    shopCards.forEach(card=>{
+        card.addEventListener('click', (e)=>{
+            // avoid clicks on internal buttons (if we add any later)
+            if(e.target.closest('button')) return;
+            const name = card.dataset.name || card.querySelector('h3')?.textContent || 'Item';
+            const price = parseFloat(card.dataset.price || card.querySelector('.price')?.textContent.replace('$','') || '0');
+            const icon = card.querySelector('.shop-icon')?.textContent || '';
+            addToCart(name, price, icon);
+        });
+    });
+
+    cartToggle.addEventListener('click', (e)=>{
+        e.preventDefault();
+        cartPanel.classList.toggle('open');
+        const opened = cartPanel.classList.contains('open');
+        cartPanel.setAttribute('aria-hidden', opened ? 'false' : 'true');
+    });
+
+    cartClose.addEventListener('click', ()=>{
+        cartPanel.classList.remove('open');
+        cartPanel.setAttribute('aria-hidden','true');
+    });
+
+    cartItemsEl.addEventListener('click', (e)=>{
+        const idx = Number(e.target.dataset.idx);
+        if(e.target.matches('.qty-increase')){
+            if(!Number.isNaN(idx)) { cart[idx].qty += 1; updateCartUI(); }
+            return;
+        }
+        if(e.target.matches('.qty-decrease')){
+            if(!Number.isNaN(idx)){
+                cart[idx].qty -= 1;
+                if(cart[idx].qty <= 0) cart.splice(idx,1);
+                updateCartUI();
+            }
+            return;
+        }
+        if(e.target.matches('.cart-item-remove')){
+            if(!Number.isNaN(idx)){
+                cart.splice(idx,1);
+                updateCartUI();
+            }
+            return;
+        }
+    });
+
+    document.getElementById('cart-checkout').addEventListener('click', ()=>{
+        alert('Checkout is not implemented in this demo.');
+    });
+
+    updateCartUI();
 })();
 </script>
 
